@@ -2,7 +2,7 @@
 title: "Practice Problems"
 author: "Tyler R. Pritchard"
 date: "12/03/2022"
-output: html_document
+output: pdf_document
 always_allow_html: true
 params:
   ss: NA
