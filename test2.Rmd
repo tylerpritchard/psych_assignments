@@ -38,7 +38,7 @@ dat_mode <- data.frame(Person = randomNames(n=3, which.names = 'first', sample.w
 dat <- rbind(dat1, dat_mode) %>% 
   arrange(Person)
                        
-dat
+kbl(dat)
 ```
 
 \newpage 
