@@ -1,0 +1,172 @@
+---
+title: "Practice Problems"
+author: "Tyler R. Pritchard"
+date: "12/03/2022"
+output: pdf_document
+always_allow_html: true
+params:
+  cor_ss: NA
+  cor_ans: NA
+  cor_seed: NA
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, error=T, warning=F)
+```
+
+# Key
+```{r echo=F, warning=F, message=F}
+library(tidyverse)
+library(kableExtra)
+library(randomNames)
+
+sample_size <- params$cor_ss
+cor_ans <- params$cor_ans
+rho <- runif(1, -1, 1)
+```
+
+A researcher is conducting a study on functioning in children. Specifically, they believes that a child's cognitive abilities (Intelligence Quotient; IQ) are associated with their emotional abilities (Emotional Quotient; EQ). To test this hypothesis, they conduct a study using `r sample_size` children. Children complete the Wechsler Intelligence Scale for Children (WISC), a measure of IQ, and the Trait Emotional Intelligence Questionnaire (TEIQue), a measure of EQ. They are interested in calculating the descriptive statistics of 1st year psychology students. They complete cognitive assessments on 10 psychology students and obtain the following scores:
+
+```{r echo=F, warning=F, message=F}
+seed <- params$cor_seed
+set.seed(seed)
+library(faux)
+dat_cor <- rnorm_multi(n=sample_size,
+                       var=2,
+                       varnames = c("IQ", "EQ"),
+                       mu=c(100, 50),
+                       sd=c(15, 10),
+                       r=rho)
+dat1 <- data.frame(Person = randomNames(n=sample_size, which.names = 'first', sample.with.replacement = F))
+
+df <- cbind(dat1, dat_cor) %>% 
+  mutate(IQ=round(IQ, 0), 
+         EQ=round(EQ, 0))
+
+                       
+kable(df) %>% 
+  kable_minimal(full_width=F) %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(row=0, bold=T)
+```
+
+\newpage 
+
+1. What is the mean of the IQ and EQ for these individuals?
+
+```{r}
+mean_iq <- round(mean(df$IQ), 2)
+mean_eq <- round(mean(df$EQ), 2)
+text <- paste("The mean of IQ is ", mean_iq, " and the mean of EQ is ", mean_eq, ".", sep="")
+```
+
+```{r results="asis", eval=cor_ans=="Yes"}
+cat(text)
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+2. What is the standard deviation of IQ and EQ, and sum of the products of IQ X EQ?
+
+
+```{r echo=F}
+ss_iq <- round(sum((df$IQ-mean(df$IQ))^2), 2)
+ss_eq <- round(sum((df$EQ-mean(df$EQ))^2), 2)
+
+
+sp_iqeq <- round(sum((df$IQ-mean(df$IQ))*(df$EQ-mean(df$EQ))), 2)
+
+text2 <- paste("The sum of squares for IQ is ", ss_iq, " and the sum of squares of EQ is ", ss_eq, ". The sum of the sproducts is ", sp_iqeq, ".", sep="")
+```
+
+```{r eval=cor_ans=="Yes", results="asis"}
+cat(text2)
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+3. What is the correlation between IQ and EQ
+
+
+
+```{r eval=cor_ans=="Yes"}
+cor.test(df$IQ, df$EQ)
+```
+
+
+```{r eval=cor_ans=="Yes"}
+text_hand <- paste(sp_iqeq, "/", "square_root(", ss_iq, "*", ss_eq, ") = ", round(sp_iqeq/(sqrt(ss_iq*ss_eq)), 4), sep="")
+```
+
+```{r results='asis', eval=cor_ans=="Yes"}
+cat(text_hand)
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+\newpage
+
+4. Create a beautiful scatterplot including line of best fit.
+
+```{r warning=F, message=F, error=F, eval=cor_ans=="Yes"}
+ggplot(df, aes(IQ, EQ))+
+  geom_point(color="slateblue", alpha=.9, shape=21, size=2)+
+  geom_smooth(method="lm", se=F, color="black", linetype=2)+
+  theme_minimal(12)
+```
+
+\newpage
+
+5. Write an APA results section. 
+
+
+```{r}
+p_value <- ifelse(cor.test(df$IQ, df$EQ)$p.value<.001, .001, round(cor.test(df$IQ, df$EQ)$p.value, 3))
+r_value <- round(cor.test(df$IQ, df$EQ)$estimate, 2)
+r_square <- round((cor.test(df$IQ, df$EQ)$estimate)^2, 2)
+
+text_results <- paste("The results of the study suggest that IQ ", ifelse(p_value<.05, "is", "is not"), " associated with EQ, r = ",r_value, ", p = ", p_value, ", R^2 = ", r_square,".", sep="")
+
+```
+
+
+```{r results="asis", eval=cor_ans=="Yes"}
+paste(cat(text_results), sep=" ")
+```
+
+## Formulas: 
+
+Mean = $\frac{\sum{x}}{n}$
+
+Population variance = $\sigma^2 = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \mu)^2} {n}$
+
+Sample variance = $var = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \mu)^2} {n-1}=\frac{SS_x} {n-1}$
+
+
+Sample standard deviation = $SD = \sqrt{\frac{\displaystyle\sum_{i=1}^{n}(x_i - \mu)^2} {n-1}}$
+
+Sum of the products = $SP = \sqrt{\displaystyle\sum_{i=1}^{n}(x_i - \mu_x)*(y_i - \mu_y)}$
