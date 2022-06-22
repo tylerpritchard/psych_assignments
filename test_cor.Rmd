@@ -48,7 +48,7 @@ df <- cbind(dat1, dat_cor) %>%
          EQ=round(EQ, 0))
 
                        
-head(df, n=sample_size)
+kable(df)
 ```
 
 \newpage 
