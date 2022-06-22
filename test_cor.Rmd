@@ -48,7 +48,7 @@ df <- cbind(dat1, dat_cor) %>%
          EQ=round(EQ, 0))
 
                        
-kable(df)
+kable(df, format="latex")
 ```
 
 \newpage 
@@ -155,7 +155,7 @@ text_results <- paste("The results of the study suggest that IQ ", ifelse(p_valu
 
 
 ```{r results="asis", eval=cor_ans=="Yes"}
-paste(cat(text_results), sep=" ")
+cat(text_results)
 ```
 
 ## Formulas: 
