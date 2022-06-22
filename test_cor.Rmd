@@ -25,7 +25,7 @@ options(knitr.table.format = "latex")
 ```{r echo=F, warning=F, message=F}
 library(tidyverse)
 library(randomNames)
-
+library(kableExtra)
 sample_size <- params$cor_ss
 cor_ans <- params$cor_ans
 rho <- runif(1, -1, 1)
@@ -150,7 +150,7 @@ ggplot(df, aes(IQ, EQ))+
 ```{r}
 p_value <- ifelse(cor.test(df$IQ, df$EQ)$p.value<.001, .001, round(cor.test(df$IQ, df$EQ)$p.value, 3))
 r_value <- round(cor.test(df$IQ, df$EQ)$estimate, 2)
-r_square <- round((cor.test(df$IQ, df$EQ)$estimate)^2, 2)
+r_square <- round((cor.test(df$IQ, df$EQ)$estimate)*(cor.test(df$IQ, df$EQ)$estimate), 2)
 
 text_results <- paste("The results of the study suggest that IQ ", ifelse(p_value<.05, "is", "is not"), " associated with EQ, r = ",r_value, ", p = ", p_value, ", R^2 = ", r_square,".", sep="")
 
