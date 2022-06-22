@@ -18,6 +18,7 @@ params:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, error=T, warning=F)
 options(kableExtra.auto_format = FALSE)
+options(knitr.table.format = "latex")
 ```
 
 # Key
@@ -49,7 +50,8 @@ df <- cbind(dat1, dat_cor) %>%
          EQ=round(EQ, 0))
 
                        
-kable(df, format="latex")
+kable(df) %>% 
+  kable_styling(latex_options = 'scale_down')
 ```
 
 \newpage 
