@@ -3,6 +3,10 @@ title: "Practice Problems"
 author: "Tyler R. Pritchard"
 date: "12/03/2022"
 output: pdf_document
+header-includes:
+- \usepackage{pdflscape}
+- \usepackage{booktabs}
+output: pdf_document
 always_allow_html: true
 params:
   cor_ss: NA
