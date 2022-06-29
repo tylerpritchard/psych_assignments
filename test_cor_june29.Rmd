@@ -139,7 +139,7 @@ cat(text_hand)
 ```{r warning=F, message=F, error=F, eval=cor_ans=="Yes" }
 knitr::opts_chunk$set(fig.width=6, fig.height=5) 
 library(ggplot2)
-ggplot(df, aes(IQ, EQ))+
+ggplot(data=df, aes(IQ, EQ))+
   geom_point(color="slateblue", alpha=.9, shape=21, size=2)+
   geom_smooth(method="lm", se=F, color="black", linetype=2)+
   theme_minimal(12)
