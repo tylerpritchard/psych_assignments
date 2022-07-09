@@ -2,7 +2,7 @@
 title: "Correlation Practice Problems"
 author: ""
 date: ""
-output: pour_data_document
+output: pdf_document
 always_allow_html: true
 params:
   cor_ss: NA
